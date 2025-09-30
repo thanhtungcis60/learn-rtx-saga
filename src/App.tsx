@@ -6,7 +6,7 @@ import cityApi from './api/cityApi';
 
 function App() {
   useEffect(() => {
-    cityApi.getAll().then((response) => console.log(response));
+    cityApi.getAll().then((response) => response.data.forEach((city) => console.log(city.code)));
   }, []);
 
   return (
