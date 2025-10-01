@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
 import cityApi from './api/cityApi';
+import studentApi from './api/studentApi';
 
 function App() {
   useEffect(() => {
