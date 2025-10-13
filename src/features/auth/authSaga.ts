@@ -1,20 +1,38 @@
-import { fork, take } from 'redux-saga/effects';
+import { call, delay, fork, take, put } from 'redux-saga/effects';
 import { authActions, LoginPayload } from './authSlice';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 function* handleLogin(payload: LoginPayload) {
-  console.log('Handle login', payload);
+  try {
+    yield delay(1000);
+    localStorage.setItem('access_token', 'fake_token');
+    yield put(
+      authActions.loginSuccess({
+        id: 1,
+        name: 'Easy Frontend',
+      }),
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      yield put(authActions.loginFail(error.message));
+    } else {
+      yield put(authActions.loginFail('Unknown error'));
+    }
+  }
 }
 function* handleLogout() {
-  console.log('Handle logout');
+  yield delay(500);
+  localStorage.removeItem('access_token');
 }
 function* watchLoginFlow() {
-  console.log('authActions.login.type: ', authActions.login.type);
   while (true) {
-    const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
-    yield fork(handleLogin, action.payload);
+    const isLoggedIn = Boolean(localStorage.getItem('access_token'));
+    if (!isLoggedIn) {
+      const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
+      yield fork(handleLogin, action.payload);
+    }
     yield take(authActions.logout.type);
-    yield fork(handleLogout);
+    yield call(handleLogout);
   }
 }
 export default function* authSaga() {

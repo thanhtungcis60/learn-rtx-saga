@@ -1,10 +1,10 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { authActions } from '../authSlice';
+import { useAppDispatch } from '../../../app/hooks';
 
 export default function LoginPage() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleLoginClick = () => {
     dispatch(authActions.login({ username: 'user1', password: '' }));

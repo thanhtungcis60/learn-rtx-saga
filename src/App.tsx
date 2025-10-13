@@ -11,9 +11,9 @@ import { authActions } from './features/auth/authSlice';
 
 function App() {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    cityApi.getAll().then((response) => response.data.forEach((city) => console.log(city.code)));
-  }, []);
+  // useEffect(() => {
+  //   cityApi.getAll().then((response) => response.data.forEach((city) => console.log(city.code)));
+  // }, []);
 
   return (
     <>
