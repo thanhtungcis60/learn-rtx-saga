@@ -1,7 +1,14 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../authSlice';
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
+
+  const handleLoginClick = () => {
+    dispatch(authActions.login({ username: 'user1', password: '' }));
+  };
   return (
     <Box
       sx={{
@@ -17,7 +24,7 @@ export default function LoginPage() {
           Student Management
         </Typography>
         <Box mt={4}>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button variant="contained" color="primary" onClick={handleLoginClick} fullWidth>
             Fake Login
           </Button>
         </Box>
