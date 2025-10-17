@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Navigate, Route, RouteProps } from 'react-router-dom';
 
-export function PrivateRoute(props: RouteProps) {
+type Props = { children: React.ReactElement };
+export function PrivateRoute({ children }: Props) {
   //Check if user is logged in
   //If yes, show route
   //Otherwise redirect to login page
@@ -9,5 +10,5 @@ export function PrivateRoute(props: RouteProps) {
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
-  return <Route {...props} />;
+  return children;
 }

@@ -4,6 +4,13 @@ import { User } from '../../models/user';
 export interface LoginPayload {
   username: string;
   password: string;
+  onSuccess?: () => void;
+  onError?: (error?: string) => void;
+}
+
+export interface LogoutPayload {
+  onSuccess?: () => void;
+  onError?: (error?: string) => void;
 }
 export interface AuthState {
   isLoggedIn: boolean;
@@ -30,7 +37,7 @@ const authSlice = createSlice({
     loginFail(state, action: PayloadAction<string>) {
       state.logging = false;
     },
-    logout(state) {
+    logout(state, action: PayloadAction<LogoutPayload>) {
       state.isLoggedIn = false;
       state.currentUser = { id: '', name: '' };
     },

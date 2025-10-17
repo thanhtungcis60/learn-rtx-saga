@@ -1,5 +1,5 @@
 import { call, delay, fork, take, put } from 'redux-saga/effects';
-import { authActions, LoginPayload } from './authSlice';
+import { authActions, LoginPayload, LogoutPayload } from './authSlice';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 function* handleLogin(payload: LoginPayload) {
@@ -12,17 +12,30 @@ function* handleLogin(payload: LoginPayload) {
         name: 'Easy Frontend',
       }),
     );
+    // ✅ Gọi callback onSuccess nếu có
+    if (payload.onSuccess) {
+      payload.onSuccess();
+    }
   } catch (error) {
+    let errorMsg = '';
     if (error instanceof Error) {
-      yield put(authActions.loginFail(error.message));
+      errorMsg = error.message;
     } else {
-      yield put(authActions.loginFail('Unknown error'));
+      errorMsg = 'Unknown error';
+    }
+    yield put(authActions.loginFail(errorMsg));
+    if (payload.onError) {
+      payload.onError(errorMsg);
     }
   }
 }
-function* handleLogout() {
+function* handleLogout(payload: LogoutPayload) {
   yield delay(500);
   localStorage.removeItem('access_token');
+  //redirect to login page
+  if (payload.onSuccess) {
+    payload.onSuccess();
+  }
 }
 function* watchLoginFlow() {
   while (true) {
@@ -31,8 +44,8 @@ function* watchLoginFlow() {
       const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
       yield fork(handleLogin, action.payload);
     }
-    yield take(authActions.logout.type);
-    yield call(handleLogout);
+    const actionLogout: PayloadAction<LogoutPayload> = yield take(authActions.logout.type);
+    yield call(handleLogout, actionLogout.payload);
   }
 }
 export default function* authSaga() {

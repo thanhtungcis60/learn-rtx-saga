@@ -2,12 +2,21 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import { authActions } from '../authSlice';
 import { useAppDispatch } from '../../../app/hooks';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    dispatch(authActions.login({ username: 'user1', password: '' }));
+    dispatch(
+      authActions.login({
+        username: 'user1',
+        password: '',
+        onSuccess: () => navigate('/admin'),
+        onError: (err) => console.log(`Login fail: ${err}`),
+      }),
+    );
   };
   return (
     <Box

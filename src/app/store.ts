@@ -10,7 +10,14 @@ export const store = configureStore({
     counter: counterReducer,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Bỏ qua các field cụ thể trong action
+        ignoredActions: ['auth/login', 'auth/logout'],
+        ignoredPaths: ['payload.onSuccess', 'payload.onError'],
+      },
+    }).concat(sagaMiddleware),
 });
 sagaMiddleware.run(rootSaga);
 
