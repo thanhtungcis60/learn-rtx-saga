@@ -1,12 +1,13 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import { authActions } from '../authSlice';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLogging = useAppSelector((state) => state.auth.logging);
 
   const handleLoginClick = () => {
     dispatch(
@@ -34,6 +35,7 @@ export default function LoginPage() {
         </Typography>
         <Box mt={4}>
           <Button variant="contained" color="primary" onClick={handleLoginClick} fullWidth>
+            {isLogging && <CircularProgress size={20} color="secondary" />}
             Fake Login
           </Button>
         </Box>
