@@ -1,37 +1,16 @@
-import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import cityApi from './api/cityApi';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import LoginPage from './features/auth/pages/LoginPage';
-import { AdminLayout } from './component/Layout';
 import { NotFound, PrivateRoute } from './component/Common';
-import { useAppDispatch } from './app/hooks';
-import { Button } from '@mui/material';
-import { authActions } from './features/auth/authSlice';
+import { AdminLayout } from './component/Layout';
+import LoginPage from './features/auth/pages/LoginPage';
 
 function App() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   // useEffect(() => {
   //   cityApi.getAll().then((response) => response.data.forEach((city) => console.log(city.code)));
   // }, []);
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() =>
-          dispatch(
-            authActions.logout({
-              onSuccess: () => navigate('/login'),
-              onError: (err) => console.log(`Logout fail: ${err}`),
-            }),
-          )
-        }
-      >
-        Logout
-      </Button>
       <div className="App">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
