@@ -14,7 +14,7 @@ export default function LoginPage() {
       authActions.login({
         username: 'user1',
         password: '',
-        onSuccess: () => navigate('/admin'),
+        onSuccess: () => navigate('/admin/dashboard'),
         onError: (err) => console.log(`Login fail: ${err}`),
       }),
     );
