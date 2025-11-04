@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Student } from '../../models';
-import { stat } from 'fs';
 export interface RankingbyCityList {
   cityId: string;
+  cityName: string;
   rankingList: Student[];
 }
 export interface DashboardStatistics {

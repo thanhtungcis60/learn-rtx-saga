@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { dashboardActions } from './dashboardSlice';
-import { Box, LinearProgress } from '@mui/material';
-import { StatisticItem } from './components/StatisticItemProps';
-import { BubbleChart, ChatRounded, LinearScaleSharp, PeopleAlt } from '@mui/icons-material';
-import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import MaleIcon from '@mui/icons-material/Male';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { Box, LinearProgress, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { StatisticItem } from './components/StatisticItemProps';
+import { dashboardActions } from './dashboardSlice';
+import Widget from './components/Widget';
+import { StudentRankingList } from './components/StudentRankingList';
 
 export interface DashboardProps {}
 
@@ -72,6 +73,59 @@ export default function Dashboard(props: DashboardProps) {
             label="mark <= 5"
             value={statistics.lowMarkCount}
           />
+        </Box>
+      </Box>
+
+      {/* All student ranking */}
+      <Box mt={4}>
+        <Typography variant="h4">All students</Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 2, // tương đương spacing={2}
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: '1fr 1fr',
+              lg: 'repeat(4, 1fr)',
+            },
+            mt: 2,
+          }}
+        >
+          <Box>
+            <Widget title="Student with highest mark">
+              <StudentRankingList studentList={highestStudentList} />
+            </Widget>
+          </Box>
+          <Box>
+            <Widget title="Student with lowest mark">
+              <StudentRankingList studentList={lowestStudentList} />
+            </Widget>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* Ranking by city */}
+      <Box mt={4}>
+        <Typography variant="h4">Ranking by city</Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 2, // tương đương spacing={2}
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: '1fr 1fr',
+              lg: 'repeat(4, 1fr)',
+            },
+            mt: 2,
+          }}
+        >
+          {rankingByCityList.map((rankingByCity) => (
+            <Box>
+              <Widget title={`Tp. ${rankingByCity.cityName}`}>
+                <StudentRankingList studentList={rankingByCity.rankingList} />
+              </Widget>
+            </Box>
+          ))}
         </Box>
       </Box>
     </Box>

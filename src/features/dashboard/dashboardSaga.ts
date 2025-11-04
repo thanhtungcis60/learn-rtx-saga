@@ -1,9 +1,8 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { dashboardActions, DashboardStatistics, RankingbyCityList } from './dashboardSlice';
-import { City, ListResponse, Student } from '../../models';
-import studentApi from '../../api/studentApi';
-import Dashboard from '.';
 import cityApi from '../../api/cityApi';
+import studentApi from '../../api/studentApi';
+import { City, ListResponse, Student } from '../../models';
+import { dashboardActions, DashboardStatistics, RankingbyCityList } from './dashboardSlice';
 
 function* fetchStatistics() {
   const responseList: Array<ListResponse<Student>> = yield all([
@@ -55,6 +54,7 @@ function* fetchRankingByCityList() {
   const responseList: Array<ListResponse<Student>> = yield all(callList);
   const rankingbyCityList: RankingbyCityList[] = cityList.map((city, idx) => ({
     cityId: city.code,
+    cityName: city.name,
     rankingList: responseList[idx].data,
   }));
   yield put(dashboardActions.setRankingbyCityList(rankingbyCityList));
