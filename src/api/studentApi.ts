@@ -4,7 +4,7 @@ import axiosClient from './axiosClient';
 const studentApi = {
   getAll(params: ListParams): Promise<ListResponse<Student>> {
     const url = '/students';
-    return axiosClient.get(url, { params: { params } });
+    return axiosClient.get(url, { params });
   },
   getById(id: string): Promise<ListResponse<Student>> {
     const url = `/students/${id}`;
