@@ -15,5 +15,5 @@ function* fetchStudentList(action: PayloadAction<ListParams>) {
 }
 
 export default function* studentSaga() {
-  yield takeLatest(studentActions.fetchStudentList, fetchStudentList);
+  yield takeLatest(studentActions.fetchStudentList.type, fetchStudentList);
 }
