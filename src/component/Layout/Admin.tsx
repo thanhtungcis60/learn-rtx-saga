@@ -1,9 +1,8 @@
 import { Box } from '@mui/material';
-import * as React from 'react';
-import { Header, NotFound, Sidebar } from '../Common';
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from '../../features/dashboard';
 import StudentFeature from '../../features/students';
+import { Header, NotFound, Sidebar } from '../Common';
 
 export interface AdminLayoutProps {}
 
@@ -39,8 +38,9 @@ export function AdminLayout(props: AdminLayoutProps) {
         }}
       >
         <Routes>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/students" element={<StudentFeature />} />
+          <Route path="/students/*" element={<StudentFeature />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
