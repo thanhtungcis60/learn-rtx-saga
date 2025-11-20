@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Student } from '../../../models';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -10,6 +11,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { capitalizeString, getMarkColor } from '../../../utils';
 
 export interface StudentTableProps {
   studentList: Student[];
@@ -36,8 +38,12 @@ export function StudentTable({ studentList, onEdit, onRemove }: StudentTableProp
             <TableRow key={student.id}>
               <TableCell align="center">{idx + 1}</TableCell>
               <TableCell>{student.name}</TableCell>
-              <TableCell>{student.gender}</TableCell>
-              <TableCell>{student.mark}</TableCell>
+              <TableCell>{capitalizeString(student.gender)}</TableCell>
+              <TableCell>
+                <Box color={getMarkColor(student.mark)} fontWeight="bold">
+                  {student.mark}
+                </Box>
+              </TableCell>
               <TableCell>{student.city}</TableCell>
               <TableCell align="right">
                 <Button
