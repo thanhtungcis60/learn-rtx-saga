@@ -4,9 +4,9 @@ import { RootState } from '../../app/store';
 
 export interface StudentState {
   loading: boolean;
-  list?: Student[];
-  filter?: ListParams;
-  pagination?: PaginationParams;
+  list: Student[];
+  filter: ListParams;
+  pagination: PaginationParams;
 }
 
 const initialState: StudentState = {
