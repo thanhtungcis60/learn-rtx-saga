@@ -1,5 +1,8 @@
-import React, { useEffect } from 'react';
+import { Box, Button, LinearProgress, Pagination, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectCityMap } from '../../city/citySlice';
+import { StudentTable } from '../components/StudentTable';
 import {
   selectStudentFilter,
   selectStudentList,
@@ -7,8 +10,6 @@ import {
   selectStudentPagination,
   studentActions,
 } from '../studentSlice';
-import { Box, Button, LinearProgress, Pagination, Typography } from '@mui/material';
-import { StudentTable } from '../components/StudentTable';
 
 export interface ListPageProps {}
 
@@ -17,6 +18,7 @@ export default function ListPage(props: ListPageProps) {
   const pagination = useAppSelector(selectStudentPagination);
   const filter = useAppSelector(selectStudentFilter);
   const loading = useAppSelector(selectStudentLoading);
+  const cityMap = useAppSelector(selectCityMap);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(studentActions.fetchStudentList(filter));
@@ -54,7 +56,7 @@ export default function ListPage(props: ListPageProps) {
       </Box>
 
       {/* StudentTable */}
-      <StudentTable studentList={studentList} />
+      <StudentTable studentList={studentList} cityMap={cityMap} />
 
       {/* Pagination */}
       <Box mt={2} display="flex" justifyContent="center">

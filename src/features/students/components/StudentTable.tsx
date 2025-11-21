@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Student } from '../../../models';
+import { City, Student } from '../../../models';
 import {
   Box,
   Button,
@@ -15,11 +15,12 @@ import { capitalizeString, getMarkColor } from '../../../utils';
 
 export interface StudentTableProps {
   studentList: Student[];
+  cityMap: { [key: string]: City };
   onEdit?: (student: Student) => void;
   onRemove?: (student: Student) => void;
 }
 
-export function StudentTable({ studentList, onEdit, onRemove }: StudentTableProps) {
+export function StudentTable({ studentList, cityMap, onEdit, onRemove }: StudentTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table" size="small" sx={{}}>
@@ -44,7 +45,7 @@ export function StudentTable({ studentList, onEdit, onRemove }: StudentTableProp
                   {student.mark}
                 </Box>
               </TableCell>
-              <TableCell>{student.city}</TableCell>
+              <TableCell>{cityMap[student.city]?.name}</TableCell>
               <TableCell align="right">
                 <Button
                   sx={{ mr: 1 }}
