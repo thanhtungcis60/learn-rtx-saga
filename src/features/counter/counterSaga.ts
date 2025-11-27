@@ -14,7 +14,7 @@ export function* handleIncrementSaga(action: PayloadAction<number>) {
 
 export default function* counterSaga() {
   // yield all([counterSaga()]);
-  console.log('Counter saga');
+  // console.log('Counter saga');
   yield takeEvery(incrementSaga.toString(), handleIncrementSaga); //Effect của saga lắng nghe action increment
   // yield takeLatest(incrementSaga.toString(), handleIncrementSaga);
 }

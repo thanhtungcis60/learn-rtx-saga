@@ -1,8 +1,8 @@
 import { Box, Button, LinearProgress, Pagination, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectCityMap } from '../../city/citySlice';
 import { StudentTable } from '../components/StudentTable';
+
+import StudentFilters from '../components/StudentFilters';
 import {
   selectStudentFilter,
   selectStudentList,
@@ -10,6 +10,9 @@ import {
   selectStudentPagination,
   studentActions,
 } from '../studentSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectCityList, selectCityMap } from '../../city/citySlice';
+import { ListParams } from '../../../models';
 
 export interface ListPageProps {}
 
@@ -19,6 +22,7 @@ export default function ListPage(props: ListPageProps) {
   const filter = useAppSelector(selectStudentFilter);
   const loading = useAppSelector(selectStudentLoading);
   const cityMap = useAppSelector(selectCityMap);
+  const cityList = useAppSelector(selectCityList);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(studentActions.fetchStudentList(filter));
@@ -31,6 +35,11 @@ export default function ListPage(props: ListPageProps) {
         _page: page,
       }),
     );
+  };
+
+  const handleSearchChange = (newFilter: ListParams) => {
+    // console.log('Search change: ', newFilter);
+    dispatch(studentActions.setFilterWithDebounce(newFilter));
   };
   return (
     <Box sx={{ position: 'relative', pt: 1 }}>
@@ -54,10 +63,12 @@ export default function ListPage(props: ListPageProps) {
           Add new student
         </Button>
       </Box>
-
+      {/* Filters */}
+      <Box mb={3}>
+        <StudentFilters filter={filter} cityList={cityList} onSearchChange={handleSearchChange} />
+      </Box>
       {/* StudentTable */}
       <StudentTable studentList={studentList} cityMap={cityMap} />
-
       {/* Pagination */}
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination

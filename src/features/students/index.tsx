@@ -11,7 +11,7 @@ export interface StudentFeatureProps {}
 
 export default function StudentFeature(props: StudentFeatureProps) {
   const location = useLocation();
-  console.log('location.pathname ', location.pathname);
+  // console.log('location.pathname ', location.pathname);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
