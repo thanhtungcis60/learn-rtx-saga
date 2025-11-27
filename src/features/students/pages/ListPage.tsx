@@ -41,6 +41,10 @@ export default function ListPage(props: ListPageProps) {
     // console.log('Search change: ', newFilter);
     dispatch(studentActions.setFilterWithDebounce(newFilter));
   };
+  const handleFilterChange = (newFilter: ListParams) => {
+    // console.log('Search change: ', newFilter);
+    dispatch(studentActions.setFilter(newFilter));
+  };
   return (
     <Box sx={{ position: 'relative', pt: 1 }}>
       {loading && (
@@ -65,7 +69,12 @@ export default function ListPage(props: ListPageProps) {
       </Box>
       {/* Filters */}
       <Box mb={3}>
-        <StudentFilters filter={filter} cityList={cityList} onSearchChange={handleSearchChange} />
+        <StudentFilters
+          filter={filter}
+          cityList={cityList}
+          onSearchChange={handleSearchChange}
+          onChange={handleFilterChange}
+        />
       </Box>
       {/* StudentTable */}
       <StudentTable studentList={studentList} cityMap={cityMap} />
