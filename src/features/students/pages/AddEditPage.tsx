@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Student } from '../../../models';
 import studentApi from '../../../api/studentApi';
 import StudentForm from '../components/StudentForm';
+import { toast } from 'react-toastify';
 
 export interface AddEditPageProps {}
 
@@ -34,6 +35,7 @@ export default function AddEditPage(props: AddEditPageProps) {
     } else {
       await studentApi.add(formValues);
     }
+    toast.success('Save student successfully');
     navigate(-1);
   };
 
