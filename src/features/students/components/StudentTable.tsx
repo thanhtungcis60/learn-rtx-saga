@@ -17,6 +17,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { capitalizeString, getMarkColor } from '../../../utils';
+import { useNavigate } from 'react-router-dom';
 
 export interface StudentTableProps {
   studentList: Student[];
@@ -26,6 +27,7 @@ export interface StudentTableProps {
 }
 
 export function StudentTable({ studentList, cityMap, onEdit, onRemove }: StudentTableProps) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student>();
 
@@ -35,6 +37,9 @@ export function StudentTable({ studentList, cityMap, onEdit, onRemove }: Student
 
     //set confirm dialog
     setOpen(true);
+  };
+  const handleEditStudent = async (student: Student) => {
+    navigate(`${student.id}`);
   };
   return (
     <>
@@ -68,7 +73,7 @@ export function StudentTable({ studentList, cityMap, onEdit, onRemove }: Student
                     size="small"
                     variant="contained"
                     color="primary"
-                    onClick={() => onEdit?.(student)}
+                    onClick={() => handleEditStudent(student)}
                   >
                     Edit
                   </Button>

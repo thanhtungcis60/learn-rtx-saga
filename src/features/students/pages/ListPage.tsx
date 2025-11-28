@@ -14,10 +14,13 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectCityList, selectCityMap } from '../../city/citySlice';
 import { ListParams, Student } from '../../../models';
 import studentApi from '../../../api/studentApi';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export interface ListPageProps {}
 
 export default function ListPage(props: ListPageProps) {
+  const navigate = useNavigate();
   const studentList = useAppSelector(selectStudentList);
   const pagination = useAppSelector(selectStudentPagination);
   const filter = useAppSelector(selectStudentFilter);
@@ -78,7 +81,7 @@ export default function ListPage(props: ListPageProps) {
       >
         <Typography variant="h4">Students</Typography>
 
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={() => navigate('add')}>
           Add new student
         </Button>
       </Box>
