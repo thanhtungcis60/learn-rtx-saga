@@ -12,7 +12,8 @@ import {
 } from '../studentSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectCityList, selectCityMap } from '../../city/citySlice';
-import { ListParams } from '../../../models';
+import { ListParams, Student } from '../../../models';
+import studentApi from '../../../api/studentApi';
 
 export interface ListPageProps {}
 
@@ -44,6 +45,20 @@ export default function ListPage(props: ListPageProps) {
   const handleFilterChange = (newFilter: ListParams) => {
     // console.log('Search change: ', newFilter);
     dispatch(studentActions.setFilter(newFilter));
+  };
+  const handleRemoveStudent = async (student: Student) => {
+    console.log('Handle remove student', student);
+    try {
+      // Remove student API
+      await studentApi.remove(student?.id || '');
+
+      // Trigger to re-fetch student list with current filter
+      const newFilter = { ...filter };
+      dispatch(studentActions.setFilter(newFilter));
+    } catch (error) {
+      // Toast error
+      console.log('Failed to fetch student', error);
+    }
   };
   return (
     <Box sx={{ position: 'relative', pt: 1 }}>
@@ -77,7 +92,7 @@ export default function ListPage(props: ListPageProps) {
         />
       </Box>
       {/* StudentTable */}
-      <StudentTable studentList={studentList} cityMap={cityMap} />
+      <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} />
       {/* Pagination */}
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination
