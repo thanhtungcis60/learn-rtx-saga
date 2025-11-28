@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Alert, Box, Button, CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { useAppSelector } from '../../../app/hooks';
@@ -7,6 +7,8 @@ import { SelectField } from '../../../component/FormFields/SelectField';
 import { Student } from '../../../models';
 import { selectCityOptions } from '../../city/citySlice';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
+import { getErrorMessage } from '../../../utils';
 
 export interface StudentFormProps {
   initialValues?: Student;
@@ -15,6 +17,7 @@ export interface StudentFormProps {
 
 export default function StudentForm({ initialValues, onSubmit }: StudentFormProps) {
   const cityOptions = useAppSelector(selectCityOptions);
+  const [error, setError] = useState<string>('');
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -45,7 +48,12 @@ export default function StudentForm({ initialValues, onSubmit }: StudentFormProp
       .required('Please select gender.'),
     city: yup.string().required('Please select city.'),
   });
-  const { control, handleSubmit, reset } = useForm<Student>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<Student>({
     defaultValues: initialValues,
     resolver: yupResolver(schema),
   });
@@ -53,8 +61,15 @@ export default function StudentForm({ initialValues, onSubmit }: StudentFormProp
   //     reset(initialValues); // 👈 Cập nhật form khi initialValue thay đổi ~ API trả về dữ liệu
   //   }, [initialValues, reset]);
 
-  const handleFormSubmit = (formValues: Student) => {
-    console.log('Submit', formValues);
+  const handleFormSubmit = async (formValues: Student) => {
+    // console.log('Submit', formValues);
+    try {
+      setError('');
+      await onSubmit?.(formValues);
+    } catch (error) {
+      const message = getErrorMessage(error);
+      setError(message);
+    }
   };
 
   return (
@@ -72,11 +87,14 @@ export default function StudentForm({ initialValues, onSubmit }: StudentFormProp
         />
         <InputField name="age" control={control} label="Age" type="number" />
         <InputField name="mark" control={control} label="Mark" type="number" />
-        <SelectField name="city" control={control} label="City" options={cityOptions} />
+        {Array.isArray(cityOptions) && cityOptions.length > 0 && (
+          <SelectField name="city" control={control} label="City" options={cityOptions} />
+        )}
 
+        {error && <Alert severity="error">{error}</Alert>}
         <Box mt={3}>
           <Button type="submit" variant="contained" color="primary">
-            Save
+            {isSubmitting && <CircularProgress color="primary" size={16} />} &nbsp; Save
           </Button>
         </Box>
       </form>

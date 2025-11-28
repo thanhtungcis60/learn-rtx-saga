@@ -28,7 +28,14 @@ export default function AddEditPage(props: AddEditPageProps) {
     })();
   }, [studentId]);
 
-  const handleStudentFormSubmit = (formValues: Student) => {};
+  const handleStudentFormSubmit = async (formValues: Student) => {
+    if (isEdit) {
+      await studentApi.update(formValues);
+    } else {
+      await studentApi.add(formValues);
+    }
+    navigate(-1);
+  };
 
   const initialValues: Student = {
     name: '',
