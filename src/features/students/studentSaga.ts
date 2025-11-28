@@ -15,10 +15,11 @@ function* fetchStudentList(action: PayloadAction<ListParams>) {
 }
 function* handleSearchDebounce(action: PayloadAction<ListParams>) {
   // console.log('Sudent Saga debounce: ', action.payload);
+
   yield put(studentActions.setFilter(action.payload));
 }
 
 export default function* studentSaga() {
   yield takeLatest(studentActions.fetchStudentList.type, fetchStudentList);
-  yield debounce(500, studentActions.setFilterWithDebounce.type, handleSearchDebounce);
+  yield debounce(500, studentActions.setFilterWithDebounce.type, handleSearchDebounce); //Chờ 500 ms từ khi người dùng ngừng gõ rồi mới thay đổi filter từ đó trigger gọi API
 }

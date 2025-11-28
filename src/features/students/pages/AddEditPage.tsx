@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Student } from '../../../models';
 import studentApi from '../../../api/studentApi';
+import StudentForm from '../components/StudentForm';
 
 export interface AddEditPageProps {}
 
@@ -26,6 +27,18 @@ export default function AddEditPage(props: AddEditPageProps) {
       }
     })();
   }, [studentId]);
+
+  const handleStudentFormSubmit = (formValues: Student) => {};
+
+  const initialValues: Student = {
+    name: '',
+    age: '',
+    mark: '',
+    gender: 'male',
+    city: '',
+    ...student,
+  } as Student;
+  console.log({ student });
   return (
     <Box>
       <Button onClick={() => navigate(-1)}>
@@ -33,6 +46,11 @@ export default function AddEditPage(props: AddEditPageProps) {
         &nbsp;Back to student list
       </Button>
       <Typography variant="h4">{isEdit ? 'Update student info' : 'Add new student'}</Typography>
+      {(!isEdit || Boolean(student?.id)) && (
+        <Box mt={3}>
+          <StudentForm initialValues={initialValues} onSubmit={handleStudentFormSubmit} />
+        </Box>
+      )}
     </Box>
   );
 }
